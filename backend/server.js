@@ -2,9 +2,12 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.js';
+import productRoutes from './routes/productRoute.js';
+
 
 const app = express();
-const port = 5000;
+
+const port = 4000
 
 app.use(cors());
 app.use(express.json());
@@ -14,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use("/api/products", productRoutes)
 
 app.listen(port, (err) => {
     if (!err) {
