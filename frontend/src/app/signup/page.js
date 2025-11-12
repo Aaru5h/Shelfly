@@ -33,6 +33,7 @@ export default function SignupPage() {
       if (res.ok) {
         setMessage(data.message || 'Signup successful!');
         setFormData({ name: '', email: '', password: '' });
+        window.location.href = "/dashboard";
       } else {
         setMessage(data.message || 'Signup failed');
       }
@@ -44,13 +45,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-700">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-100">Sign Up</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-gray-300 text-sm font-bold mb-2">
               Username
             </label>
             <input
@@ -58,14 +59,14 @@ export default function SignupPage() {
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline border-gray-600"
               placeholder="Choose a username"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="email" className="block text-gray-300 text-sm font-bold mb-2">
               Email
             </label>
             <input
@@ -73,14 +74,14 @@ export default function SignupPage() {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline border-gray-600"
               placeholder="Enter your email"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="password" className="block text-gray-300 text-sm font-bold mb-2">
               Password
             </label>
             <input
@@ -88,7 +89,7 @@ export default function SignupPage() {
               id="password"
               value={formData.password}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-gray-100 mb-3 leading-tight focus:outline-none focus:shadow-outline border-gray-600"
               placeholder="Create a password"
               required
             />
@@ -98,13 +99,13 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 border border-gray-600"
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'Signing up...' : 'Sign Up'}
             </button>
             <Link
               href="/login"
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className="inline-block align-baseline font-bold text-sm text-gray-400 hover:text-gray-300"
             >
               Already have an account? Login
             </Link>
@@ -114,7 +115,7 @@ export default function SignupPage() {
         {message && (
           <p
             className={`mt-4 text-center font-semibold ${
-              message.includes('Successfully') ? 'text-green-600' : 'text-red-500'
+              message.includes('Successfully') ? 'text-green-500' : 'text-red-400'
             }`}
           >
             {message}

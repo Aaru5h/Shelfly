@@ -23,7 +23,7 @@ export default function LoginPage() {
       if (res.ok) {
         setMessage("Login successful");
         localStorage.setItem("token", data.token);
-        window.location.href = "/";
+        window.location.href = "/dashboard";
       } else {
         setMessage(data.msg || "Invalid credentials");
       }
@@ -34,19 +34,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-700">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-100">Login</h1>
 
         {message && (
-          <p className="text-center mb-4 text-sm text-red-500">{message}</p>
+          <p className="text-center mb-4 text-sm text-red-400">{message}</p>
         )}
 
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-300 text-sm font-bold mb-2"
             >
               Email
             </label>
@@ -55,7 +55,7 @@ export default function LoginPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline border-gray-600"
               placeholder="Enter your email"
               required
             />
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-300 text-sm font-bold mb-2"
             >
               Password
             </label>
@@ -73,7 +73,7 @@ export default function LoginPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-700 text-gray-100 mb-3 leading-tight focus:outline-none focus:shadow-outline border-gray-600"
               placeholder="Enter your password"
               required
             />
@@ -82,14 +82,14 @@ export default function LoginPage() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border border-gray-600"
             >
-              Sign In
+              Log In
             </button>
 
             <Link
               href="/signup"
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className="inline-block align-baseline font-bold text-sm text-gray-400 hover:text-gray-300"
             >
               Don’t have an account? Sign Up
             </Link>
