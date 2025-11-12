@@ -9,7 +9,13 @@ const app = express();
 
 const port = 4000
 
-app.use(cors());
+app.use(cors(
+    {
+    origin: ["https://shelfly-upzi.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }
+));
 
 app.use(express.json());
 
