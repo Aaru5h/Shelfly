@@ -9,7 +9,12 @@ const app = express();
 
 const port = 4000
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://https://shelfly-34bg.vercel.app/", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
