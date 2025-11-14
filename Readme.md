@@ -1,51 +1,108 @@
-Shelfly – Smart Inventory & Product Management
-Platform
-Authentication & Authorization Secure user registration and login with JWT; role-based access (Admin / Staff)
-CRUD Operations Create, Read, Update, Delete product and category entries
-Advanced Searching Keyword-based, partial, and full-text search for quick product lookup
-Filtering Filter by category, availability, stock status, and price range
-Sorting Sort products by price, quantity, category, or date added
-Pagination Server-side pagination to efficiently handle large product lists
-Dashboard Insights Display total items, low-stock alerts, and recent activity
-Analytics (Optional) Visualize inventory stats using Recharts or Chart.js
-AI Integration (Optional) Use Gemini API for smart stock forecasting or trend analysis
-1. Project Title
-Shelfly – Smart Inventory & Product Management Platform
-2. Problem Statement
-In many small and medium-sized businesses, managing product inventory remains inefficient and
-error-prone. From keeping track of stock levels to searching for specific items, users often rely on
-manual spreadsheets or outdated systems lacking proper filtering, sorting, and pagination
-mechanisms. Shelfly aims to provide an intuitive, centralized solution to manage inventory data
-efficiently. It offers robust CRUD operations, advanced search and filter capabilities, real-time stock
-insights, and server-side pagination to ensure seamless performance even with large datasets.
-3. System Architecture
-Frontend (Next.js + TailwindCSS / shadcn/ui) ® Backend API (Node.js + Express.js + Prisma
-ORM) ® Database (MySQL / MongoDB Atlas)
-5. Key Features
-6. Tech Stack
-Frontend Next.js, React, TailwindCSS / shadcn/ui, Axios
-Backend Node.js, Express.js, Prisma ORM
-Database MySQL (PlanetScale) / MongoDB Atlas
-Authentication JWT
-AI Integration Gemini API (Optional)
-Hosting Vercel (frontend), Render / Railway (backend), AWS / MongoDB Atlas
-7. API Overview
-/api/auth/signup POST Register a new user Public
-/api/auth/login POST Authenticate user and issue JWT Public
-/api/products GET Retrieve paginated, searchable, and filterable list
-of products
-Authenticated
-/api/products POST Add a new product to inventory Authenticated
-/api/products/:id PUT Update existing product details Authenticated
-/api/products/:id DELETE Delete a product entry Authenticated
-/api/categories GET Retrieve all categories (with optional filters) Authenticated
-/api/categories POST Add a new category Admin
-/api/categories/:id PUT Update category details Admin
-/api/categories/:id DELETE Remove category Admin
-/api/dashboard GET Fetch analytics and inventory overview Authenticated
-10. Summary
-Shelfly transforms traditional inventory tracking into a modern, data-driven experience. With
-advanced searching, sorting, filtering, and pagination, it ensures fast and intelligent product
-management. The project demonstrates end-to-end proficiency in Next.js, Node.js, Express,
-Prisma, and MySQL/MongoDB, making it a strong candidate for portfolio, hackathons, or
-enterprise-level demonstrations.
+#  Shelfly – Smart Inventory & Product Management Platform
+
+Shelfly is a modern inventory and product management system designed for small and medium-sized businesses. It provides fast, intelligent, and structured inventory handling with features like advanced search, filtering, sorting, dashboard insights, and secure authentication.
+
+---
+
+##  Problem Statement
+
+Many businesses still rely on spreadsheets or outdated tools for managing inventory, causing inefficiency and errors. These systems lack essential features like proper filtering, sorting, pagination, and real-time insights.
+
+**Shelfly** solves these issues by offering a centralized, intuitive, and scalable inventory management platform with robust CRUD operations, smart search capabilities, and real-time stock monitoring.
+
+---
+
+##  System Architecture
+
+Frontend (Next.js + TailwindCSS / shadcn/ui)
+↓
+Backend API (Node.js + Express.js + Prisma ORM)
+↓
+Database (MySQL / PlanetScale or MongoDB Atlas)
+
+pgsql
+Copy code
+
+---
+
+##  Key Features
+
+-  **Authentication & Authorization**  
+  Secure JWT-based login with role-based access (Admin / Staff)
+
+-  **CRUD Operations**  
+  Create, Read, Update, Delete products and categories
+
+-  **Advanced Searching**  
+  Keyword-based, partial, and full-text product search
+
+-  **Filtering**  
+  By category, availability, price range, stock status
+
+-  **Sorting**  
+  Sort by price, quantity, category, or date added
+
+-  **Pagination**  
+  Efficient server-side pagination for large datasets
+
+-  **Dashboard Insights**  
+  Total items, low-stock alerts, recent activity overview
+
+-  **Analytics (Optional)**  
+  Charts via Recharts or Chart.js
+
+-  **AI Integration (Optional)**  
+  Gemini API for stock forecasting or trend analysis
+
+---
+
+##  Tech Stack
+
+### **Frontend**
+- Next.js  
+- React  
+- TailwindCSS / shadcn/ui  
+- Axios  
+
+### **Backend**
+- Node.js  
+- Express.js  
+- Prisma ORM  
+
+### **Database**
+- MySQL (PlanetScale) OR MongoDB Atlas  
+
+### **Authentication**
+- JWT (JSON Web Token)
+
+### **Hosting**
+- Vercel (Frontend)
+- Render / Railway (Backend)
+- PlanetScale / MongoDB Atlas (Database)
+
+---
+
+##  API Overview
+
+| Endpoint | Method | Description | Access |
+|---------|--------|-------------|--------|
+| `/api/auth/signup` | POST | Register new user | Public |
+| `/api/auth/login` | POST | Login and get JWT | Public |
+| `/api/products` | GET | Get products with search, filter, pagination | Authenticated |
+| `/api/products` | POST | Add new product | Authenticated |
+| `/api/products/:id` | PUT | Update product | Authenticated |
+| `/api/products/:id` | DELETE | Delete product | Authenticated |
+| `/api/categories` | GET | Get all categories | Authenticated |
+| `/api/categories` | POST | Add new category | Admin |
+| `/api/categories/:id` | PUT | Edit category | Admin |
+| `/api/categories/:id` | DELETE | Delete category | Admin |
+| `/api/dashboard` | GET | Inventory stats & analytics | Authenticated |
+
+---
+
+##  Summary
+
+Shelfly modernizes traditional inventory systems by offering fast search, intelligent filtering, clean UI, real-time insights, and seamless scalability.  
+It demonstrates strong full-stack skills across **Next.js, Express.js, Prisma, SQL/NoSQL databases**, and optional **AI integration**, making it ideal for portfolios, hackathons, and enterprise use.
+
+---
