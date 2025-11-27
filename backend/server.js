@@ -7,15 +7,27 @@ import productRoutes from './routes/productRoute.js';
 
 const app = express();
 
-const port = 4000
+const port = process.env.PORT || 4000;
 
-app.use(cors(
-    {
-    origin: ["https://shelfly-upzi.vercel.app"],
+const allowedOrigins = [
+  "https://shelfly-upzi.vercel.app",
+  "http://localhost:3000",
+  process.env.CLIENT_ORIGIN,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  }
-));
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
