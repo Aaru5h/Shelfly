@@ -1,9 +1,9 @@
-import 'dotenv/config'; 
-import express from 'express';
-import cors from 'cors';
-import authRoutes from './routes/auth.js';
-import productRoutes from './routes/productRoute.js';
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 
+const authRoutes = require('./routes/auth');
+const productRoutes = require('./routes/productRoute');
 
 const app = express();
 
@@ -43,3 +43,5 @@ app.listen(port, (err) => {
         console.log(`Server running on port ${port}`);
     }
 });
+
+module.exports = app;
