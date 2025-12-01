@@ -1,10 +1,11 @@
-import express from 'express';
-import { PrismaClient } from '../generated/prisma/client.js';
+const express = require('express')
+const { PrismaClient } = require('../generated/prisma/client.js');
+const { verifyAccessToken } = require('../middlewares/auth.js');
 
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.post('/', async(req,res)=>{
+router.post('/', verifyAccessToken, async(req,res)=>{
     const {name, sku, description, price} = req.body
     try{
         const product = await prisma.product.create({
@@ -98,4 +99,4 @@ router.delete('/:id', async(req,res)=>{
     }
 })
 
-export default router;
+module.exports = router;
