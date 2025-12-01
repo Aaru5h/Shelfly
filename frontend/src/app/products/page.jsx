@@ -100,10 +100,9 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-[#f5f5f5]">
-      <div className="flex min-h-screen flex-col md:flex-row">
-        <NavBar />
-        <main className="flex-1 space-y-6 px-4 py-6 md:px-10 md:py-10">
+    <div className="min-h-screen bg-[#0d0d0d] text-[#f5f5f5] flex flex-col">
+      <NavBar />
+      <main className="flex-1 space-y-6 px-4 py-6 md:px-10 md:py-10">
           <header className="space-y-2">
             <p className="text-xs uppercase tracking-[0.5em] text-[#6f6f6f]">
               Products
@@ -157,8 +156,7 @@ const ProductsPage = () => {
               )}
             </section>
           </div>
-        </main>
-      </div>
+      </main>
     </div>
   );
 };
