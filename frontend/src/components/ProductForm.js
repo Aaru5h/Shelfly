@@ -6,7 +6,7 @@ const emptyState = {
   name: "",
   price: "",
   quantity: "",
-  categoryId: "",
+  categoryName: "",
 };
 
 const formatNumber = (value) => (value === "" ? "" : Number(value));
@@ -15,7 +15,6 @@ const productFormTitle = (initialData) =>
   initialData ? "Edit product" : "Add product";
 
 export default function ProductForm({
-  categories = [],
   initialData = null,
   loading = false,
   onSubmit,
@@ -29,7 +28,7 @@ export default function ProductForm({
         name: initialData.name || "",
         price: initialData.price?.toString() || "",
         quantity: initialData.quantity?.toString() || "",
-        categoryId: initialData.categoryId || "",
+        categoryName: initialData.categoryName || "",
       });
     } else {
       setFormState(emptyState);
@@ -49,7 +48,7 @@ export default function ProductForm({
       name: formState.name.trim(),
       price: Number(formatNumber(formState.price)),
       quantity: Number(formatNumber(formState.quantity)),
-      categoryId: formState.categoryId,
+      categoryName: formState.categoryName.trim(),
     });
   };
 
@@ -103,10 +102,10 @@ export default function ProductForm({
               name="quantity"
               type="number"
               min="0"
+              step="1"
               value={formState.quantity}
               onChange={handleChange}
               placeholder="0"
-              required
               className="field-input"
             />
           </label>
@@ -114,23 +113,16 @@ export default function ProductForm({
 
         <label className="field">
           <span className="field-label">Category</span>
-          <select
-            id="categoryId"
-            name="categoryId"
-            value={formState.categoryId}
+          <input
+            id="categoryName"
+            name="categoryName"
+            placeholder="Type category name"
+            value={formState.categoryName}
             onChange={handleChange}
             required
-            className="field-select"
-          >
-            <option value="" className="select-option" disabled>
-              Choose a category
-            </option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id} className="select-option">
-                {category.name}
-              </option>
-            ))}
-          </select>
+            className="field-input"
+          />
+          <span className="field-hint">New names are created automatically.</span>
         </label>
 
         <div className="form-actions">
@@ -210,8 +202,7 @@ export default function ProductForm({
           color: #a8b1d3;
         }
 
-        .field-input,
-        .field-select {
+        .field-input {
           height: 50px;
           border-radius: 14px;
           border: 1px solid rgba(64, 76, 122, 0.6);
@@ -226,8 +217,7 @@ export default function ProductForm({
           color: #5f6a8f;
         }
 
-        .field-input:focus,
-        .field-select:focus {
+        .field-input:focus {
           outline: none;
           border-color: rgba(112, 104, 255, 0.75);
           box-shadow: 0 0 0 2px rgba(112, 104, 255, 0.18);
@@ -245,9 +235,9 @@ export default function ProductForm({
           }
         }
 
-        .select-option {
-          background: #111525;
-          color: #e4e9ff;
+        .field-hint {
+          font-size: 0.75rem;
+          color: #717ba8;
         }
 
         .form-actions {

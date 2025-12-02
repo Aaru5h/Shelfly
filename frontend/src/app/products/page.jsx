@@ -44,8 +44,19 @@ const ProductsPage = () => {
         authorizedFetch("/categories"),
         authorizedFetch("/products"),
       ]);
+
+      const categoryNameMap = categoriesData.reduce((acc, category) => {
+        acc[category.id] = category.name;
+        return acc;
+      }, {});
+
+      const normalizedProducts = productsData.map((product) => ({
+        ...product,
+        categoryName: product.categoryName || categoryNameMap[product.categoryId] || "",
+      }));
+
       setCategories(categoriesData);
-      setProducts(productsData);
+      setProducts(normalizedProducts);
     } catch (err) {
       setError(err.message || "Failed to load products");
     } finally {
@@ -64,7 +75,7 @@ const ProductsPage = () => {
     setCreateLoading(true);
     setError("");
     try {
-      await authorizedFetch("/products", {
+      await authorizedFetch("/api/products", {
         method: "POST",
         body: JSON.stringify(payload),
       });
@@ -182,14 +193,12 @@ const ProductsPage = () => {
         <section className="manager-grid">
           <div ref={formRef} className="forms-stack">
             <ProductForm
-              categories={categories}
               loading={createLoading}
               onSubmit={handleCreateProduct}
             />
 
             {editProduct && (
               <ProductForm
-                categories={categories}
                 initialData={editProduct}
                 loading={updateLoading}
                 onSubmit={handleUpdateProduct}

@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/productRoute');
+const categoriesRoutes = require('./routes/categories');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use("/api/products", productRoutes)
+app.use("/api/categories", categoriesRoutes)
 
 app.listen(port, (err) => {
     if (!err) {
