@@ -8,7 +8,7 @@ import { authorizedFetch } from "@/lib/http";
 import {
   Package,
   Tags,
-  DollarSign,
+  IndianRupee,
   AlertTriangle,
   ArrowRight,
   Plus,
@@ -129,7 +129,7 @@ const DashboardPage = () => {
       title: "Inventory Value",
       value: loading ? "..." : formatCurrency(totalInventoryValue),
       description: "Stock on hand",
-      icon: DollarSign,
+      icon: IndianRupee,
       accent: "accent-emerald",
     },
     {
@@ -155,10 +155,14 @@ const DashboardPage = () => {
             </p>
           </div>
           <div className="hero-actions">
-            <Link href="/products" className="primary-action">
+            <button
+              type="button"
+              className="primary-action"
+              onClick={() => router.push("/products")}
+            >
               <Plus size={16} />
               <span>Add Product</span>
-            </Link>
+            </button>
             <button
               type="button"
               className="secondary-action"
@@ -238,7 +242,7 @@ const DashboardPage = () => {
                         </span>
                       </div>
                       <div className="product-stats">
-                        <span className="price-tag">${Number(product.price || 0).toFixed(2)}</span>
+                        <span className="price-tag">{formatCurrency(Number(product.price || 0), { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         <span className="quantity-tag">Qty {product.quantity}</span>
                       </div>
                     </li>
@@ -334,7 +338,12 @@ const DashboardPage = () => {
                 <div>
                   <span className="snapshot-label">Avg. Price</span>
                   <span className="snapshot-value">
-                    {loading ? "..." : `$${averagePrice.toFixed(2)}`}
+                    {loading
+                      ? "..."
+                      : formatCurrency(averagePrice, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                   </span>
                 </div>
                 <div>
@@ -783,7 +792,11 @@ const DashboardPage = () => {
             font-size: 0.78rem;
             font-weight: 600;
             color: #ffe0e4;
-            text-decoration: underline;
+            text-decoration: none;
+          }
+
+          .alert-link:hover {
+            color: #ffffff;
           }
 
           .category-list li {
@@ -866,11 +879,12 @@ const DashboardPage = () => {
   );
 };
 
-function formatCurrency(val) {
+function formatCurrency(val, { minimumFractionDigits, maximumFractionDigits } = {}) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: minimumFractionDigits ?? 0,
+    maximumFractionDigits: maximumFractionDigits ?? (minimumFractionDigits ?? 0),
   }).format(val);
 }
 

@@ -323,9 +323,13 @@ export default function SignupPage() {
         }
 
         .terms-link {
-          color: #d8d4ff;
-          font-weight: 600;
-          text-decoration: underline;
+          color: #e5e5e5;
+          font-weight: 500;
+          text-decoration: none;
+        }
+
+        .terms-link:hover {
+          color: #ffffff;
         }
 
         .primary-button {

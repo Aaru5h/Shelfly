@@ -299,9 +299,13 @@ export default function LoginPage() {
         }
 
         .terms-link {
-          color: #8f7dff;
-          font-weight: 600;
-          text-decoration: underline;
+          color: #e5e5e5;
+          font-weight: 500;
+          text-decoration: none;
+        }
+
+        .terms-link:hover {
+          color: #ffffff;
         }
       `}</style>
     </div>
