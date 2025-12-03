@@ -75,7 +75,7 @@ const ProductsPage = () => {
     setCreateLoading(true);
     setError("");
     try {
-      await authorizedFetch("/api/products", {
+      await authorizedFetch("/products", {
         method: "POST",
         body: JSON.stringify(payload),
       });

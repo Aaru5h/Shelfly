@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
         const refreshToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' });
 
-        res.json({ accessToken, refreshToken });
+        res.json({ token: accessToken });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
