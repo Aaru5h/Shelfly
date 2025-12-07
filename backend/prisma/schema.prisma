@@ -24,7 +24,7 @@ model Product {
   name        String
   sku         String?   @unique
   description String?
-  price       Float
+  price       Decimal
   quantity    Int       @default(0)
   categoryId  Int?
   category    Category? @relation(fields: [categoryId], references: [id])
