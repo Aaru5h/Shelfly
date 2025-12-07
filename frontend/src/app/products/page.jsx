@@ -193,18 +193,12 @@ const ProductsPage = () => {
         <section className="manager-grid">
           <div ref={formRef} className="forms-stack">
             <ProductForm
-              loading={createLoading}
-              onSubmit={handleCreateProduct}
+              key={editProduct ? `edit-${editProduct.id}` : "create"}
+              initialData={editProduct}
+              loading={editProduct ? updateLoading : createLoading}
+              onSubmit={editProduct ? handleUpdateProduct : handleCreateProduct}
+              onCancel={editProduct ? () => setEditProduct(null) : undefined}
             />
-
-            {editProduct && (
-              <ProductForm
-                initialData={editProduct}
-                loading={updateLoading}
-                onSubmit={handleUpdateProduct}
-                onCancel={() => setEditProduct(null)}
-              />
-            )}
           </div>
 
           <div className="table-wrap">
