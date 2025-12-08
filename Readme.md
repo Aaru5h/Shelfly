@@ -106,3 +106,7 @@ Shelfly modernizes traditional inventory systems by offering fast search, intell
 It demonstrates strong full-stack skills across **Next.js, Express.js, Prisma, SQL/NoSQL databases**, and optional **AI integration**, making it ideal for portfolios, hackathons, and enterprise use.
 
 ---
+
+## Hosted Link
+
+https://shelfly-upzi.vercel.app/login
