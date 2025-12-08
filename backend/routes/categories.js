@@ -1,23 +1,54 @@
-const express = require('express')
-const { PrismaClient } = require('@prisma/client')
-const { verifyAccessToken } = require('../middlewares/auth.js')
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const { verifyAccessToken } = require('../middlewares/auth.js');
 
-const prisma = new PrismaClient()
-const router = express.Router()
+const prisma = new PrismaClient();
+const router = express.Router();
+
 
 router.get('/', verifyAccessToken, async (req, res) => {
+    const { search, hasProducts, productName } = req.query;
+
     try {
         const categories = await prisma.category.findMany({
+            where: {
+                AND: [
+                    search
+                        ? { name: { contains: search, mode: 'insensitive' } }
+                        : {},
+
+                    productName
+                        ? {
+                              products: {
+                                  some: {
+                                      name: {
+                                          contains: productName,
+                                          mode: 'insensitive'
+                                      }
+                                  }
+                              }
+                          }
+                        : {},
+
+                    hasProducts === "true"
+                        ? { products: { some: {} } }
+                        : hasProducts === "false"
+                        ? { products: { none: {} } }
+                        : {}
+                ]
+            },
             include: {
                 products: true
             }
         });
+
         res.json(categories);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Failed to fetch categories" });
     }
-})
+});
+
 
 router.get('/:id', verifyAccessToken, async (req, res) => {
     const { id } = req.params;
@@ -41,40 +72,25 @@ router.get('/:id', verifyAccessToken, async (req, res) => {
 
 
 router.post('/', verifyAccessToken, async (req, res) => {
-    const { name, sku, description, price, quantity, categoryName } = req.body;
+    const { name } = req.body;
+
+    if (!name || !name.trim()) {
+        return res.status(400).json({ message: "Category name is required" });
+    }
 
     try {
-        let category = null;
+        const cleanName = name.trim();
+        const existing = await prisma.category.findUnique({ where: { name: cleanName } });
 
-        if (categoryName && categoryName.trim() !== "") {
-            const cleanName = categoryName.trim();
-
-            category = await prisma.category.findUnique({
-                where: { name: cleanName }
-            });
-
-            if (!category) {
-                category = await prisma.category.create({
-                    data: { name: cleanName }
-                });
-            }
+        if (existing) {
+            return res.status(409).json({ message: "Category already exists" });
         }
 
-        const product = await prisma.product.create({
-            data: {
-                name,
-                sku,
-                description,
-                price: parseFloat(price),
-                quantity: Number(quantity),
-                categoryId: category ? category.id : null
-            },
-            include: {
-                category: true
-            }
+        const category = await prisma.category.create({
+            data: { name: cleanName }
         });
 
-        res.status(201).json(product);
+        res.status(201).json(category);
 
     } catch (err) {
         console.log(err);
@@ -82,19 +98,20 @@ router.post('/', verifyAccessToken, async (req, res) => {
     }
 });
 
+
 router.delete('/:id', verifyAccessToken, async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
 
     try {
         const category = await prisma.category.delete({
             where: { id: Number(id) }
-        })
+        });
 
-        res.json(category)
+        res.json(category);
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ message: "Failed to delete category" })
+        console.error(err);
+        res.status(500).json({ message: "Failed to delete category" });
     }
-})
+});
 
 module.exports = router;
