@@ -103,7 +103,7 @@ Copy code
 ##  Summary
 
 Shelfly modernizes traditional inventory systems by offering fast search, intelligent filtering, clean UI, real-time insights, and seamless scalability.  
-It demonstrates strong full-stack skills across **Next.js, Express.js, Prisma, SQL/NoSQL databases**, and optional **AI integration**, making it ideal for portfolios, hackathons, and enterprise use.
+It demonstrates strong full-stack skills across **Next.js, Express.js, Prisma, SQL databases**, and optional **AI integration**, making it ideal for portfolios, hackathons, and enterprise use.
 
 ---
 
