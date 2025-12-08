@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Filter, Plus, Search } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import ProductForm from "@/components/ProductForm";
 import ProductTable from "@/components/ProductTable";
@@ -16,6 +16,13 @@ const formatCurrency = (value, fractionalDigits = 0) =>
     maximumFractionDigits: fractionalDigits,
   }).format(Number(value || 0));
 
+const stockFilters = [
+  { id: "all", label: "All stock", helper: "Entire catalog" },
+  { id: "low", label: "Low stock", helper: "≤ 5 units" },
+  { id: "out", label: "Out of stock", helper: "Zero units" },
+  { id: "healthy", label: "Healthy", helper: "> 5 units" },
+];
+
 const ProductsPage = () => {
   const router = useRouter();
   const formRef = useRef(null);
@@ -27,6 +34,9 @@ const ProductsPage = () => {
   const [deletingId, setDeletingId] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [stockFilter, setStockFilter] = useState("all");
 
   const ensureAuth = () => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -140,6 +150,48 @@ const ProductsPage = () => {
     [products]
   );
 
+  const filteredProducts = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    return products.filter((product) => {
+      const qty = Number(product.quantity) || 0;
+      const matchesSearch = normalizedSearch
+        ? [product.name, product.categoryName, product.sku]
+            .filter(Boolean)
+            .some((value) => value.toLowerCase().includes(normalizedSearch))
+        : true;
+
+      const matchesCategory =
+        categoryFilter === "all"
+          ? true
+          : String(product.categoryId || "uncategorised") === categoryFilter;
+
+      const matchesStock = (() => {
+        if (stockFilter === "low") return qty > 0 && qty <= 5;
+        if (stockFilter === "out") return qty === 0;
+        if (stockFilter === "healthy") return qty > 5;
+        return true;
+      })();
+
+      return matchesSearch && matchesCategory && matchesStock;
+    });
+  }, [products, searchTerm, categoryFilter, stockFilter]);
+
+  const categoryOptions = useMemo(() => {
+    const base = [
+      { id: "all", name: "All categories" },
+      ...categories.map((category) => ({
+        id: String(category.id),
+        name: category.name,
+      })),
+    ];
+
+    if (products.some((product) => !product.categoryId)) {
+      base.push({ id: "uncategorised", name: "Uncategorised" });
+    }
+
+    return base;
+  }, [categories, products]);
+
   return (
     <div className="products-page">
       <NavBar />
@@ -190,6 +242,47 @@ const ProductsPage = () => {
           </div>
         )}
 
+        <section className="filters-panel">
+          <div className="search-field">
+            <Search size={16} strokeWidth={1.5} />
+            <input
+              type="search"
+              placeholder="Search name, category, or SKU"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          </div>
+
+          <div className="category-filter">
+            <label htmlFor="categoryFilter">Category</label>
+            <select
+              id="categoryFilter"
+              value={categoryFilter}
+              onChange={(event) => setCategoryFilter(event.target.value)}
+            >
+              {categoryOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="chip-group" role="group" aria-label="Stock filters">
+            {stockFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                className={`chip ${stockFilter === filter.id ? "active" : ""}`}
+                onClick={() => setStockFilter(filter.id)}
+              >
+                <span>{filter.label}</span>
+                <small>{filter.helper}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+
         <section className="manager-grid">
           <div ref={formRef} className="forms-stack">
             <ProductForm
@@ -210,7 +303,7 @@ const ProductsPage = () => {
               </div>
             ) : (
               <ProductTable
-                products={products}
+                products={filteredProducts}
                 categories={categories}
                 onEdit={setEditProduct}
                 onDelete={handleDeleteProduct}
@@ -342,6 +435,90 @@ const ProductsPage = () => {
           color: #f7c9d0;
         }
 
+        .filters-panel {
+          display: grid;
+          grid-template-columns: minmax(220px, 1fr) minmax(200px, 220px) 1fr;
+          gap: 1.2rem;
+          padding: 1.5rem;
+          border-radius: 24px;
+          border: 1px solid rgba(82, 95, 166, 0.28);
+          background: rgba(10, 14, 28, 0.85);
+        }
+
+        .search-field {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0 1rem;
+          border-radius: 16px;
+          border: 1px solid rgba(75, 88, 152, 0.35);
+          background: rgba(6, 9, 21, 0.9);
+        }
+
+        .search-field input {
+          flex: 1;
+          background: transparent;
+          border: none;
+          color: #f5f6ff;
+          font-size: 0.95rem;
+          padding: 0.85rem 0;
+        }
+
+        .search-field input:focus {
+          outline: none;
+        }
+
+        .category-filter {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .category-filter label {
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: #a0aad4;
+        }
+
+        .category-filter select {
+          border-radius: 14px;
+          border: 1px solid rgba(75, 88, 152, 0.35);
+          background: rgba(9, 12, 24, 0.92);
+          color: #f5f6ff;
+          padding: 0.85rem 1rem;
+          font-size: 0.92rem;
+        }
+
+        .chip-group {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 0.8rem;
+        }
+
+        .chip {
+          display: flex;
+          flex-direction: column;
+          border-radius: 14px;
+          border: 1px solid rgba(72, 84, 140, 0.4);
+          background: rgba(14, 17, 35, 0.8);
+          color: #c8d0ef;
+          padding: 0.65rem 0.9rem;
+          text-align: left;
+          transition: border 0.2s ease, background 0.2s ease;
+        }
+
+        .chip small {
+          font-size: 0.7rem;
+          color: #8b94c5;
+        }
+
+        .chip.active {
+          border-color: rgba(118, 108, 255, 0.8);
+          background: rgba(36, 32, 78, 0.85);
+          color: #f4f5ff;
+        }
+
         .manager-grid {
           display: grid;
           gap: 2rem;
@@ -416,6 +593,12 @@ const ProductsPage = () => {
 
           .table-wrap {
             order: -1;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .filters-panel {
+            grid-template-columns: 1fr;
           }
         }
 

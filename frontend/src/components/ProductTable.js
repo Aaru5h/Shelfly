@@ -31,6 +31,10 @@ export default function ProductTable({
     }, {});
   }, [categories]);
 
+  const getCategoryName = (product) => {
+    return product.categoryName || categoryLookup[product.categoryId] || "Uncategorised";
+  };
+
   return (
     <section className="product-table">
       <header className="table-header">
@@ -69,7 +73,7 @@ export default function ProductTable({
                     <span className="product-name">{product.name}</span>
                     <span className="product-id">#{product.id}</span>
                   </td>
-                  <td>{categoryLookup[product.categoryId] || "Uncategorised"}</td>
+                  <td>{getCategoryName(product)}</td>
                   <td className="right">{formatCurrency(product.price)}</td>
                   <td className="right">{product.quantity}</td>
                   <td className="right">{formatDate(product.createdAt)}</td>
