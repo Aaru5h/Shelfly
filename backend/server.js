@@ -14,6 +14,8 @@ const allowedOrigins = [
   "https://shelfly-upzi.vercel.app",
   "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app",
   "http://localhost:3000",
+  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app/login",
+  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app/signup",
   process.env.CLIENT_ORIGIN,
 ].filter(Boolean);
 
