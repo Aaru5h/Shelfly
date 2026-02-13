@@ -11,13 +11,10 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 const allowedOrigins = [
-  "https://shelfly-upzi.vercel.app",
-  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app",
-  "http://localhost:3000",
-  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app/login",
-  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app/signup",
+  "http://localhost:3000", // Keep localhost for local development
   process.env.CLIENT_ORIGIN,
-].filter(Boolean);
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [])
+].filter(Boolean).map(origin => origin.trim().replace(/\/$/, "")); // Remove trailing slashes just in case
 
 app.use(
   cors({
