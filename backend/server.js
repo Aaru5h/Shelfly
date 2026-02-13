@@ -12,6 +12,7 @@ const port = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://shelfly-upzi.vercel.app",
+  "https://shelfly-upzi-64qtyuber-aaru5hs-projects.vercel.app",
   "http://localhost:3000",
   process.env.CLIENT_ORIGIN,
 ].filter(Boolean);
